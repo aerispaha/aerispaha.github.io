@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Reading Shapefiles into Pandas Dataframes &middot; Adam Erispaha
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Adam Erispaha
+        </a>
+      </h1>
+      <p class="lead">Civil/environmental engineer, loves charts, urban hydrology, and Python. Occasionally I write things here.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- <a class="sidebar-nav-item" href="/">Home</a> -->
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/aerispaha">Github Projects</a>
+      <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha">Gists</a>
+
+      <!-- <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha/archive/v2.1.0.zip">Download</a> -->
+
+    </nav>
+
+    <!-- <p>&copy; 2017. All rights reserved.</p> -->
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Reading Shapefiles into Pandas Dataframes</h1>
+  <span class="post-date">24 Jan 2017</span>
+  <p>I&#39;ve just about had it up to here with and ArcMap and arcpy. Today I begin my quest to free myself from ever needing to rely on ESRI for spatial analysis and mapping.</p>
+
+<p><a href="http://geopandas.org/">Geopandas</a> seems great, but I have had a lot of trouble getting it installed and have therefore been hesitant to rely on it in any package I create. Instead, I&#39;ve used the following snippet to read a shapefile into a Pandas dataframe for quick analysis. You will need the <a href="https://pypi.python.org/pypi/pyshp">pyshp</a> package and <a href="http://pandas.pydata.org/">Pandas</a>. If you don&#39;t have these, install them via pip and you&#39;re ready to go:</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">shapefile</span> <span class="c1">#the pyshp module</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="c1">#read file, parse out the records and shapes</span>
+<span class="n">shapefile_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;path/to/shapefile/&#39;</span>
+<span class="n">sf</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">shapefile_path</span><span class="p">)</span>
+
+<span class="c1">#grab the shapefile&#39;s field names (omit the first psuedo field)</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sf</span><span class="o">.</span><span class="n">fields</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
+<span class="n">shps</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">points</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sf</span><span class="o">.</span><span class="n">shapes</span><span class="p">()]</span>
+
+<span class="c1">#write the records into a dataframe</span>
+<span class="n">shapefile_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">records</span><span class="p">)</span>
+
+<span class="c1">#add the coordinate data to a column called &quot;coords&quot;</span>
+<span class="n">shapefile_dataframe</span> <span class="o">=</span> <span class="n">shapefile_dataframe</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">shps</span><span class="p">)</span>
+</code></pre></div>
+<p>Now <code>shapefile_dataframe</code> has all of the input shapefile&#39;s records and geometry data.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2017/01/11/us-senate-voting-partisanship-2014/">
+            Senate Voting Partisanship in 2014
+            <small>11 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/12/14/file-permissions-for-django-media-uploads/">
+            File Permissions for Django Media Uploads
+            <small>14 Dec 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      <p>&copy; 2017. All rights reserved.</p>
+    </div>
+
+  </body>
+</html>

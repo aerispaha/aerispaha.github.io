@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      File Permissions for Django Media Uploads &middot; Adam Erispaha
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Adam Erispaha
+        </a>
+      </h1>
+      <p class="lead">Civil/environmental engineer, loves charts, urban hydrology, and Python. Occasionally I write things here.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- <a class="sidebar-nav-item" href="/">Home</a> -->
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/aerispaha">Github Projects</a>
+      <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha">Gists</a>
+
+      <!-- <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha/archive/v2.1.0.zip">Download</a> -->
+
+    </nav>
+
+    <!-- <p>&copy; 2017. All rights reserved.</p> -->
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">File Permissions for Django Media Uploads</h1>
+  <span class="post-date">14 Dec 2016</span>
+  <p>After switching over a Django app&#39;s database from the SQLite starter kit to Postgres in a production environment, something happened to my ability to read/write uploaded media files. When attempting to upload an image from within my admin panel I was met with a &quot;Error 13 - Permission denied&quot;. This kicked off an all day session trying to understand file permissions on Linux systems - here is what I learned and what worked for me (bare in mind I&#39;m learning these things on the fly and am certainly no expert).</p>
+
+<h2>Users and Groups</h2>
+
+<p>From what I understand, Unixy systems are set up in a way that allows multiple &quot;users&quot; to be able to interact with the computer simultaneously. This architecture was apparently born from the days where computers took up entire rooms and needed to be shared among many researchers. A permissions system was, therefore, needed in order to prevent people from messing with other users&#39; files.
+<img src="http://localhost:4000/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg" alt="Ken-Thompson-and-Dennis-Ritchie-at-PDP11">
+As it stands now, Linux files and directories can be protected by assigning read, write, and execute permissions to specific users only. Users can also be placed in &quot;groups&quot; that share permissions. Users and groups with limited access will not be able to interact freely with certain files and directories. With that, it seemed that in my Django app, the [Error 13] Permission Denied was being triggered because the &quot;user&quot; uploading the image did not have the proper permissions to write within the target folder.</p>
+
+<h2>Unix File Permissions Primer</h2>
+
+<p>To understand how to fix this, I first checked out how permissions were set on my target media file on my server using the list command with more details:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ ls -la /var/www/media/ <span class="c1">#my media folder</span>
+total <span class="m">8</span>
+drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Oct <span class="m">24</span> <span class="m">23</span>:15 .
+drwxr-xr-x <span class="m">3</span> root root <span class="m">4096</span> Oct <span class="m">24</span> <span class="m">23</span>:15 ..
+</code></pre></div>
+<p>The relevant information output from <code>ls -la</code> starts in the second row after the <code>total 8</code>. The second and third rows provide information related to the current directory and parent directory, respectively (signified by the trailing <code>.</code> and <code>..</code>). The codes within the first column define how permissions are set for the directory&#39;s &quot;owner&quot;, &quot;group&quot;, and &quot;other&quot;. The first letter &quot;d&quot;, means that the row is a directory. Similarly, &quot;r&quot;, &quot;w&quot;, and &quot;x&quot; stand for read, write and execute, respectively, on that directory. After the starting &quot;d&quot;, the order of each trio of letters spell out the permissions for the directory&#39;s owner, group, and other. Breaking down the first code <code>drwxr-xr-x</code> into its parts we get:</p>
+
+<ul>
+<li>d ---&gt; this row is a directory</li>
+<li>rwx ---&gt; read, write execute permissions for the owner</li>
+<li>r-x ---&gt; read and execute permissions for the owner group (the &quot;w&quot; slot is empty)</li>
+<li>r-x ---&gt; read and execute permissions for the other group (all other users can read and execute, but not write)</li>
+</ul>
+
+<p>Next we need to understand what users are considered the owner, owner group. This information is drawn from the third and fourth columns; in this case the owner and owner group are both root and all other users are namely &quot;other&quot;. Putting it all together, with the <code>ls -la</code> command, we understand the following permissions of my <code>/var/www/media/</code> directory:</p>
+
+<ul>
+<li>the owner is root and has read, write execute permissions</li>
+<li>the owner group is also root, having read and execute permissions only</li>
+<li>all other users can read and execute</li>
+</ul>
+
+<h2>Django on nginx: users</h2>
+
+<p>Now that we know how to see what users have permissions in the <code>/var/www/media/</code> directory, we need to understand which user(s) are trying to read and write. My app was set up using a Digital Ocean &quot;one-click&quot; Django installation on Ubuntu 14.04 on a nginx web server. nginx is like Apache in that they are web servers, and with that it (I think, I guess?) needs to define a user with set permissions on directories and files in order to serve a website.</p>
+
+<p>Checking out the nginx config file on my server led me to this tidbit:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>$ vim /etc/nginx/nginx.conf
+
+user www-data;
+worker_processes 4;
+pid /run/nginx.pid;
+
+events {
+        worker_connections 768;
+        ...
+</code></pre></div>
+<p>Admittedly, I don&#39;t know what most of this file means, but the first line says user www-data which I took to mean &quot;the nginx user is named www-data&quot;. Googling around seemed to confirm that that was a correct assumption.</p>
+
+<h2>Changing owners and permissions</h2>
+
+<p>In order for my app to be able upload media files, I needed to change the permissions and owner settings. This sounded scary at first, but doesn&#39;t have to be. <a href="http://stackoverflow.com/questions/21797372/django-errno-13-permission-denied-var-www-media-animals-user-uploads?answertab=votes#answer-21797786">This Stack Overflow answer</a> was extremely helpful.  </p>
+
+<h3>The easy, bad, insecure way:</h3>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo chmod -R <span class="m">777</span> /var/www/media/
+</code></pre></div>
+<p>This command changes the permissions recursively in <code>/var/www/media/</code> to allow read, write, and execute for all users, including other. This would have solved the problem, but is not secure.</p>
+
+<h3>The better way:</h3>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo groupadd varwwwusers
+$ sudo adduser www-data varwwwusers
+$ sudo chgrp -R varwwwusers /var/www/media/
+$ sudo chmod -R <span class="m">770</span> /var/www/media/
+</code></pre></div>
+<p>Step-by-step, this creates a new user group called &#39;varwwwusers&#39;, adds the user www-data to that group, changes the user group of /var/www/media/ to &#39;varwwwusers&#39; and finally changes the owner privileges to 770 which allows read, write and, execute rights to the owner (root) and owner group (varwwwusers) with no access rights to anyone else. Because www-data was added to the varwwwusers group, www-data can now read and write.</p>
+
+<p>With that, I fired up my app and eagerly sent an image file upload to the media directory only to run into the same [Error 13] permission denied. Desperately, I pulled out the foolish <code>sudo chmod -R 777 /var/www/media/</code> and tried again, this time with success (of course). When I inspected the uploaded file, I found this:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ ls -la /var/www/media/ <span class="c1">#my media folder</span>
+total <span class="m">8</span>
+drwxrwxrwx <span class="m">2</span> root    varwwwusers <span class="m">4096</span>  Oct <span class="m">24</span> <span class="m">23</span>:15 .
+drwxr-xr-x <span class="m">3</span> root    root        <span class="m">4096</span>  Oct <span class="m">24</span> <span class="m">23</span>:15 ..
+-rw-r--r-- <span class="m">1</span> django  django      <span class="m">77105</span> Oct <span class="m">26</span> <span class="m">20</span>:54 cool_upload.jpg
+</code></pre></div>
+<p>So, it seemed that my <code>cool_upload.jpg</code> file was being taken by Django magic and written to my media folder as the user &quot;django&quot;. With that in mind, I had only a few more steps wrap things up.</p>
+
+<p>First, I added the user &#39;django&#39; to the &#39;varwwwusers&#39; group and changed the permissions back to 770:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo adduser django varwwwusers
+$ sudo chmod -R <span class="m">770</span> /var/www/media/
+</code></pre></div>
+<p>This means that directories with the owner group varwwwusers can sharedprivileges with django.
+Finally, to make new files uploaded by django hand-off group ownership to varwwwusers, I needed to do this:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ chmod g+s /var/www/media
+</code></pre></div>
+<p>which sets the group id for all new files within my media folder.</p>
+
+<p>After restarting nginx and Gunicorn, BOOM my app was ready to upload with fancy file permissions and without a gaping security hole. With that, my first Linux file permissions journey was complete.</p>
+
+<p>If I missed anything or misspoke (which is very likely), please let me know.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2017/01/24/reading-shapefiles-into-pandas-dataframes/">
+            Reading Shapefiles into Pandas Dataframes
+            <small>24 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2017/01/11/us-senate-voting-partisanship-2014/">
+            Senate Voting Partisanship in 2014
+            <small>11 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      <p>&copy; 2017. All rights reserved.</p>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,34 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+# relative_permalinks: true
+
+# Setup
+title:            Adam Erispaha
+tagline:          'A blog'
+description:      'Civil/environmental engineer, loves charts, urban hydrology, and Python. Occasionally I write things here.'
+url:              http://hyde.getpoole.com
+baseurl:          /
+
+author:
+  name:           'Adam Erispaha'
+  url:            https://twitter.com/adamerispaha
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  account:        https://github.com/aerispaha
+  gist:           https://gist.github.com/aerispaha
+
+
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+  - pygments.rb
