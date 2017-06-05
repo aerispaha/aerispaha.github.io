@@ -10,7 +10,7 @@ permalink:        pretty
 title:            Adam Erispaha
 tagline:          'A blog'
 description:      'Civil/environmental engineer, loves charts, urban hydrology, and Python. Occasionally I write things here.'
-url:              http://aerispaha.github.io
+url:              https://adamerispaha.com #http://aerispaha.github.io
 baseurl:          /
 
 author:
