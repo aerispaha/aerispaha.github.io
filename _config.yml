@@ -1,5 +1,5 @@
 # Dependencies
-markdown:         redcarpet
+markdown:         kramdown
 highlighter:      pygments
 
 # Permalinks
@@ -10,7 +10,7 @@ permalink:        pretty
 title:            Adam Erispaha
 tagline:          'A blog'
 description:      'Civil/environmental engineer, loves charts, urban hydrology, and Python. Occasionally I write things here.'
-url:              https://www.adamerispaha.com 
+url:              http://www.adamerispaha.com
 baseurl:          /
 
 author:
