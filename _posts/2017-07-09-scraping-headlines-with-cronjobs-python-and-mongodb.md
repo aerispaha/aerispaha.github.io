@@ -13,7 +13,7 @@ To set up the cron job, I edited my crontab on my Ubuntu server by typing `cront
 
 This basically tells the server to run a script located at `/home/news_agg/scrape_news.py` every 15 minutes. The `>/dev/null 2>&1` part prevents the cron from writing a message to a log each time it runs.
 
-The news scraping Python script that gets executed every 15 minutes is fairly straightforward. First, [feedparser](https://github.com/kurtmckee/feedparser) (for parsing RSS feeds), [PyMongo](https://api.mongodb.com/python/current/) (Python wrapper for workin with MongoDB), and the datetime packages are imported and a dictionary of RSSs feeds is constructed:
+The news scraping Python script that gets executed every 15 minutes is fairly straightforward. First, [feedparser](https://github.com/kurtmckee/feedparser) (for parsing RSS feeds), [PyMongo](https://api.mongodb.com/python/current/) (Python wrapper for workin with MongoDB), and the datetime packages are imported and a dictionary of RSS feeds is constructed:
 
 ```python
 #!/usr/bin/env python
