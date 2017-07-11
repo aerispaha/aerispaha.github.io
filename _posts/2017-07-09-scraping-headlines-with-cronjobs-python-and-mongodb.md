@@ -71,9 +71,9 @@ collection = client.news.headlines
 #insert the data
 collection.insert_many(data)
 ```
-With the crontab in action, this script is run every 15 minutes which means we have a periodic snap shot of all of the new source's RSS feeds. This effectively creates a times series news headlines at a 15-minute time step.
+With the crontab in action, this script is run every 15 minutes which means we have a periodic snap shot of all of the new source's RSS feeds. This effectively creates a times series of news headlines at a 15-minute time step.
 
-This script was kicked off on June 12, 2017 (about 30 days before the day of this post). Since then, I've only scratched the surface with analysis. I've also realized that my Mongo document structure is probably pretty awkward, but, hey, it works. As an example, I set up query to count the amount of times a particular topic was found in each  new source's RSS feed:
+This script was kicked off on June 12, 2017 (about 30 days before the day of this post). Since then, I've only scratched the surface with analysis. I've also realized that my Mongo document structure is probably pretty awkward, but, hey, it works. As an example, I set up a query to count the amount of times a particular topic was found in each  new source's RSS feed:
 
 ```javascript
 db.headlines.aggregate([
