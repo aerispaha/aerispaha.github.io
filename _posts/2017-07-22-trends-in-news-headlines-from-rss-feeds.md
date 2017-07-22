@@ -34,7 +34,7 @@ Within the document, we see a list of stories (i.e. news headlines) alongside th
 ## Querying Headlines with PyMongo and Pandas
 In order to interact with the data, we construct a function, `query_rss_stories()` that wraps up the process of connecting to MongoDB, querying using the aggregation framework and regex, and organizing the results in a Pandas Dataframe:
 
-```Python
+```python
 def query_rss_stories(regex):
 
     #connect to db
