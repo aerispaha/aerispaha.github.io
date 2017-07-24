@@ -30,7 +30,11 @@ Let's start by taking a look at an example document in the MongoDB database repr
 
 Within the document, we see a list of stories (i.e. news headlines) alongside the source (USA Today) and the datetime when the headlines were observed. These snapshots are created every 15 minutes with data from the RSS feeds of 19 media organizations. At the time of writing, there are 29,925 of these snapshots in the database with headlines starting on June 12, 2017 (note: I lost all data between June 13 and July 5).
 
-Recording periodic snapshots allows us to observe how the media's interest in a particular topic changes over time. For example, a particular issue that is featured in USA Today's RSS feed for 30 hours must be of particular interest or importance, compared to another story that turns up for only a few hours. And, with data gathered four times per hour, we can construct time series that gives insight into how our media discourse changes over time and in response to important events.
+Recording periodic snapshots allows us to observe how the media's interest in a particular topic changes over time. For example, a topic that's discussed simultaneously in multiple articles by many media organizations must be especially important at a given point in time. Similarly, an issue that is featured throughout the RSS feeds for many days are likely more significant than stories that come and go within a few hours.
+
+-- Rainfall intensity duration note here --
+
+And, with data gathered four times per hour, we can construct time series that gives insight into how our media discourse changes over time and in response to important events.
 
 
 ## Querying Headlines with PyMongo and Pandas
@@ -124,7 +128,32 @@ stories.sample(n=5)
 </table>
 </div>
 
-## !!! STILL DRAFTING THIS POST !!!
+The `stories` dataframe contains all headlines related to China from all of the new sources starting around July 6. For every hour that a headline is live on a particular RSS feed, four entries will be found in the `stories` dataframe (since the snapshots are taken at 15-minute intervals).
+
+Next, we unstack the data and count the number of China-related headlines found at each time step:
+
+```python
+def create_rss_timeseries(df, freq='1h'):
+    #unstack sources and create headline_count time series
+    ts = df.assign(headline_count = 1)
+    ts = ts.groupby(['datetime', 'source']).sum()
+    ts = ts.unstack(level=-1)
+    ts.columns = ts.columns.get_level_values(1)
+
+    #set time step
+    ts = ts.assign(datetime = ts.index)
+    ts = ts.groupby(pd.Grouper(key='datetime', freq=freq)).mean()
+
+    return ts
+
+#daily time series of China headline counts
+ts = create_rss_timeseries(stories, freq='1d')
+```
+
+Now the data is ready to be plotted:
+![China-Headlines-Count]({{site.url}}/assets/img/china-headlines-count.png)
+
+
 
 ## Coverage per Hour
 
