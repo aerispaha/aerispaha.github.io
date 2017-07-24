@@ -10,20 +10,20 @@ Let's start by taking a look at an example document in the MongoDB database repr
 
 ```javascript
 {
-  u'_id': ObjectId('593e13134a5ac4327d88619c'),
-  u'datetime': datetime.datetime(2017, 6, 12, 4, 5, 32, 832000),
-  u'source': u'usa_today',
-  u'stories': [
-    u"'Dear Evan Hansen' wins six Tony Awards, including best musical",
-    u"Penguins have become NHL's newest dynasty",
-    u'First lady Melania Trump, son Barron officially move into the White House',
-    u'E3 2017: The 5 biggest reveals during the Xbox event',
-    u'Penguins repeat as Stanley Cup champions',
-    u'Homophobic slur aimed at U.S. goalkeeper Brad Guzan by Mexican fans at World Cup qualifier',
-    u"Ben Platt's reaction is the best GIF of the Tonys Awards",
-    u'Puerto Ricans parade in New York, back statehood',
-    u'Delta ends theater company sponsorship over Trump look-alike killing scene',
-    u'U.S. earns rare tie vs. Mexico in World Cup qualifier at Estadio Azteca'
+  "_id": ObjectId("593e13134a5ac4327d88619c"),
+  "datetime": datetime.datetime(2017, 6, 12, 4, 5, 32, 832000),
+  "source": u"usa_today",
+  "stories": [
+    "'Dear Evan Hansen' wins six Tony Awards, including best musical",
+    "Penguins have become NHL's newest dynasty",
+    "First lady Melania Trump, son Barron officially move into the White House",
+    "E3 2017: The 5 biggest reveals during the Xbox event",
+    "Penguins repeat as Stanley Cup champions",
+    "Homophobic slur aimed at U.S. goalkeeper Brad Guzan by Mexican fans at World Cup qualifier",
+    "Ben Platt's reaction is the best GIF of the Tonys Awards",
+    "Puerto Ricans parade in New York, back statehood",
+    "Delta ends theater company sponsorship over Trump look-alike killing scene",
+    "U.S. earns rare tie vs. Mexico in World Cup qualifier at Estadio Azteca"
   ]
 }
 ```
@@ -67,6 +67,20 @@ As an example, we'll search for stories related to China:
 stories = query_rss_stories('China')
 stories.sample(n=5)
 ```
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -82,32 +96,33 @@ stories.sample(n=5)
   </thead>
   <tbody>
     <tr>
-      <th>2017-06-12 05:00:00</th>
-      <td>cnn</td>
-      <td>Engine part rips off China Eastern Airlines jet</td>
+      <th>2017-07-20 14:00:00</th>
+      <td>breitbart</td>
+      <td>Report: U.S. Bans Prompt American Allies to Bu...</td>
     </tr>
     <tr>
-      <th>2017-07-14 12:45:00</th>
+      <th>2017-07-14 05:45:00</th>
       <td>upi</td>
       <td>India rejects China's offer to mediate Kashmir...</td>
     </tr>
     <tr>
-      <th>2017-07-12 17:45:00</th>
-      <td>fox</td>
-      <td>KFC China releasing Colonel-themed smartphone</td>
+      <th>2017-07-13 00:15:00</th>
+      <td>wsj_opinion</td>
+      <td>How to Squeeze China</td>
     </tr>
     <tr>
-      <th>2017-07-22 03:45:00</th>
+      <th>2017-07-07 19:00:00</th>
       <td>abc</td>
-      <td>WATCH:  Suspected deadly gas explosion at food...</td>
+      <td>US bombers fly over East and South China Seas</td>
     </tr>
     <tr>
-      <th>2017-07-18 01:30:00</th>
-      <td>wsj_world</td>
-      <td>Unable to Buy U.S. Military Drones, Allies Pla...</td>
+      <th>2017-07-12 19:15:00</th>
+      <td>reuters</td>
+      <td>China dissident Liu's condition critical, brea...</td>
     </tr>
   </tbody>
 </table>
+</div>
 
 ## !!! STILL DRAFTING THIS POST !!!
 
