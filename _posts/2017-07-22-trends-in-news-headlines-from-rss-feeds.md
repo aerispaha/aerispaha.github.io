@@ -28,7 +28,9 @@ Let's start by taking a look at an example document in the MongoDB database repr
 }
 ```
 
-Within the document, we see a list of stories (i.e. news headlines) alongside the source (USA Today) and the datetime when the headlines were observed. These snapshots are created every 15 minutes with data from the RSS feeds of 19 media organizations. At the time of writing, there are 29,925 of these snapshots in the database with headlines starting on June 12, 2017 (note: I lost all data between June 13 and July 5). Recording periodic snapshots allows us to get a sense of the exposure a particular story is getting in the media. For example, a particular story that is featured in USA Today's RSS feed for 30 hours must be of particular interest or importance, compared to another story that turns up for only a few hours. And, with data gathered four times per hour, we can construct time series that gives insight into how our media discourse changes over time and in response to important events.
+Within the document, we see a list of stories (i.e. news headlines) alongside the source (USA Today) and the datetime when the headlines were observed. These snapshots are created every 15 minutes with data from the RSS feeds of 19 media organizations. At the time of writing, there are 29,925 of these snapshots in the database with headlines starting on June 12, 2017 (note: I lost all data between June 13 and July 5).
+
+Recording periodic snapshots allows us to observe how the media's interest in a particular topic changes over time. For example, a particular issue that is featured in USA Today's RSS feed for 30 hours must be of particular interest or importance, compared to another story that turns up for only a few hours. And, with data gathered four times per hour, we can construct time series that gives insight into how our media discourse changes over time and in response to important events.
 
 
 ## Querying Headlines with PyMongo and Pandas
@@ -59,6 +61,53 @@ def query_rss_stories(regex):
 
     return raw_stories
 ```
+
+As an example, we'll search for stories related to China:
+```python
+stories = query_rss_stories('China')
+stories.sample(n=5)
+```
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>source</th>
+      <th>stories</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2017-06-12 05:00:00</th>
+      <td>cnn</td>
+      <td>Engine part rips off China Eastern Airlines jet</td>
+    </tr>
+    <tr>
+      <th>2017-07-14 12:45:00</th>
+      <td>upi</td>
+      <td>India rejects China's offer to mediate Kashmir...</td>
+    </tr>
+    <tr>
+      <th>2017-07-12 17:45:00</th>
+      <td>fox</td>
+      <td>KFC China releasing Colonel-themed smartphone</td>
+    </tr>
+    <tr>
+      <th>2017-07-22 03:45:00</th>
+      <td>abc</td>
+      <td>WATCH:  Suspected deadly gas explosion at food...</td>
+    </tr>
+    <tr>
+      <th>2017-07-18 01:30:00</th>
+      <td>wsj_world</td>
+      <td>Unable to Buy U.S. Military Drones, Allies Pla...</td>
+    </tr>
+  </tbody>
+</table>
 
 ## !!! STILL DRAFTING THIS POST !!!
 
