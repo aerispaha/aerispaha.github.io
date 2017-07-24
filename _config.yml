@@ -17,7 +17,7 @@ author:
   name:           'Adam Erispaha'
   url:            https://twitter.com/adamerispaha
 
-paginate:         5
+paginate:         3
 
 # Custom vars
 version:          2.1.0
