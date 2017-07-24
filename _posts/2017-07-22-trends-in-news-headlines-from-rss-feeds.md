@@ -3,8 +3,7 @@ layout: post
 title: Trends in headlines from major media companies
 ---
 
-In a recent post, I outlined a process that aims to take snapshots of the news media landscape overtime. That's led me  and store the time series in a database. After a some effort, I've been able to start extracting and analyzing the data with Pandas.
-
+In a [recent post]({% post_url 2017-07-09-scraping-headlines-with-cronjobs-python-and-mongodb %}), I outlined a process that aims to capture the dynamics of the media landscape by taking a snapshot of news headlines every 15 minutes. The database has been quietly growing for about a month now, receiving data scraped from 19 media organizations' RSS feeds while the world goes about its business. Even though we only have a sliver of headlines history to work with (about 30 days), we're ready for some analysis.
 
 Let's start by taking a look at an example document in the MongoDB database representing a snapshot of USA Today's RSS feed on June 12, 2017:
 
@@ -28,17 +27,10 @@ Let's start by taking a look at an example document in the MongoDB database repr
 }
 ```
 
-Within the document, we see a list of stories (i.e. news headlines) alongside the source (USA Today) and the datetime when the headlines were observed. These snapshots are created every 15 minutes with data from the RSS feeds of 19 media organizations. At the time of writing, there are 29,925 of these snapshots in the database with headlines starting on June 12, 2017 (note: I lost all data between June 13 and July 5).
-
-Recording periodic snapshots allows us to observe how the media's interest in a particular topic changes over time. For example, a topic that's discussed simultaneously in multiple articles by many media organizations must be especially important at a given point in time. Similarly, an issue that is featured throughout the RSS feeds for many days are likely more significant than stories that come and go within a few hours.
-
--- Rainfall intensity duration note here --
-
-And, with data gathered four times per hour, we can construct time series that gives insight into how our media discourse changes over time and in response to important events.
-
+Within the document, we see a list of stories (i.e. news headlines) alongside the source (USA Today) and the datetime when the headlines were observed. As noted above, these snapshots are created every 15 minutes with data from the RSS feeds of 19 media organizations ([see the list of feeds here]({% post_url 2017-07-09-scraping-headlines-with-cronjobs-python-and-mongodb %})). At the time of writing, there are 29,925 of these snapshots in the database with headlines starting on June 12, 2017 (note: I lost all data between June 13 and July 5).
 
 ## Querying Headlines with PyMongo and Pandas
-In order to interact with the data, we construct a function, `query_rss_stories()` that wraps up the process of connecting to MongoDB, querying using the aggregation framework and regex, and organizing the results in a Pandas Dataframe:
+In order to interact with the data, we construct a function, `query_rss_stories()` that wraps up the process of connecting to MongoDB, querying using the [aggregation framework](https://docs.mongodb.com/manual/aggregation/) and regex, and organizing the results in a Pandas dataframe:
 
 ```python
 def query_rss_stories(regex):
@@ -154,7 +146,7 @@ To visualize, we create a stacked bar chart of China-related headline counts acr
 ![China-Headlines-Count]({{site.url}}/assets/img/china-headlines-count.png)
 Here, we can see that between July 7 and July 23, 2017, between 7 and 17 China-related headlines were found from 18 media sources. Sort of interesting, but what about a more volatile topic?
 
-Let's take a look at the volume of headlines related to "Trump Jr". We'll also increase the resolution thats visualized so we can see how the media coverage evolved each hour:
+Let's take a look at the volume of headlines related to "Trump Jr". We'll also increase the resolution thats visualized so we can see how the media coverage evolves each hour:
 
 ```python
 jr_stories = query_rss_stories('Trump Jr')
@@ -164,10 +156,18 @@ jr_ts = create_rss_timeseries(jr_stories, freq='1h')
 ![Trump-Junior-Headlines-Count]({{site.url}}/assets/img/trump-jr-headlines-count.png)
 Now we're seeing a major event play out.
 
-## Coverage per Hour
+## Interpretations and Future Work
+Recording periodic snapshots allows us to observe how the media's interest in a particular topic changes over time. For example, a topic that's discussed simultaneously in multiple articles by many media organizations must be especially important at a given point in time. Similarly, an issue that is featured throughout the RSS feeds for many days are likely more significant than stories that come and go within a few hours. One can think of these dynamics like the intensity and duration of rainfall events: is there are drizzle or a deluge of articles, and for how long are the stories pattering down?
 
-next steps:
-* how many stories exist a given point of time related to a topic
-* compare all headlines at a time, find most common words/topic throughout
-* measure the proportion given to particular topics, compared to the rest
-* measure proportion given by a particular news source compared to the rest, on a given topic
+I've only scratched the surface, but there is a lot more I'd like to investigate now that I have a handle on the data. Future Work:
+* measure the proportion of attention given to particular topics
+* quantify the differences in reporting between media organizations
+* compare media attention to objectively important and quantifiable topics:
+    * casualties of war
+    * bombings, shootings
+    * environmental disasters
+* natural language analysis
+    * differences in sentiment on particular topics
+    * differences in sentiment between sources
+* identify any patterns between left- and right-leaning sources
+* host data on public server and/or [data.world](https://data.world/)
