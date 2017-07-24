@@ -144,7 +144,7 @@ ts = create_rss_timeseries(stories, freq='1d')
 
 To visualize, we create a stacked bar chart of China-related headline counts across all media organizations:
 ![China-Headlines-Count]({{site.url}}/assets/img/china-headlines-count.png)
-Here, we can see that between July 7 and July 23, 2017, between 7 and 17 China-related headlines were found from 18 media sources. Sort of interesting, but what about a more volatile topic?
+Here, we can see that each day between July 7 and July 23, 2017, between 7 and 17 China-related headlines were found from 18 media sources. Sort of interesting, but what about a more volatile topic?
 
 Let's take a look at the volume of headlines related to "Trump Jr". We'll also increase the resolution thats visualized so we can see how the media coverage evolves each hour:
 
