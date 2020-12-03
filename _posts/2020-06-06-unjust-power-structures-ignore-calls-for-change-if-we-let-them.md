@@ -17,7 +17,7 @@ Setting aside the problems with these questions, I think most people would agree
 
 But, in the real word, we have to consider the mountains of inequality between actors: some have more wealth than entire nations, some have ancestry from centuries of chattel slavery, some are killed by agents of the state, some [profit by closing community hospitals](https://theintercept.com/2020/04/01/philadelphia-hahnemann-hospital-joel-freedman/), some have legal teams, some can't post bail, some can't afford insulin, some poison the air that others breath, some write laws, some can't vote, some work from home, some are essential workers, some suffer under broad systemic racism, others benefit from it.
 
-This power asymmetry, in my view, is what matters most when we think about what tactics are strategic and moral toward to goal of achieving positive change.
+This power asymmetry, in my view, is what matters most when we think about what tactics are strategic and moral toward the goal of achieving positive change.
 
 First, let's assume that the behavior of the system, with respect to power, follows a couple rules:
 
