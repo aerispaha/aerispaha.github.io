@@ -13,6 +13,7 @@ coding tastes. In my PHP phase I was trying to blog with Laraval, for example.
 The second-most recent iteration was the magic unicorn of Django, tracking
 along with my ongoing love for Python.
 
+### Keep it simple
 Somewhere along the line I grew frustrated with mental overhead necessary to
 remember how to use Django anytime I felt inspired to write. This was exacerbated
 by my writing inconsistency.
