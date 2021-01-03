@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Measuring media coverage dynamics with MongoDB and Python
+tags: [Tech, Politics]
 ---
 
 In a [recent post]({% post_url 2017-07-09-scraping-headlines-with-cronjobs-python-and-mongodb %}), I outlined a process that aims to capture the dynamics of the media landscape by taking a snapshot of news headlines every 15 minutes. The database has been quietly growing for about a month now, receiving data scraped from 19 media organizations' RSS feeds while the world goes about its business. Even though we only have a sliver of headlines history to work with (about 30 days), we're ready for some analysis.

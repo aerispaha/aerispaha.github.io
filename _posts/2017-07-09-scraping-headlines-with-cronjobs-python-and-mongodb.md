@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Scraping headlines with cron jobs, Python, and MongoDB
+tags: [Tech, Politics]
 ---
 
 I've been interested in measuring bias in media coverage for quite a while. The discourse before and after the 2016 election has forced a lot of us (definitely me) into an anxiety spiral, trying to keep up and maintain sanity under the weight of our 24-hour news culture. To make myself feel better, I recently set up a cron job on a server that pulls the RSS feeds of as many news sources as I could think of, and stores the headlines in a MongoDB database.

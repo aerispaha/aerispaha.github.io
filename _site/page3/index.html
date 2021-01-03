@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="canonical" href="https://www.adamerispaha.com/page3/">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Adam Erispaha &middot; A blog
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link type="application/atom+xml" rel="alternate" href="https://www.adamerispaha.com/feed.xml" title="Adam Erispaha" />
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 3 of 3 for Home | Adam Erispaha</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Home" />
+<meta name="author" content="Adam Erispaha" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Civil/environmental engineer, loves charts, data, urban hydrology, and Python" />
+<meta property="og:description" content="Civil/environmental engineer, loves charts, data, urban hydrology, and Python" />
+<link rel="canonical" href="https://www.adamerispaha.com/page3/" />
+<meta property="og:url" content="https://www.adamerispaha.com/page3/" />
+<meta property="og:site_name" content="Adam Erispaha" />
+<link rel="prev" href="https://www.adamerispaha.com/page2" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Home" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://www.adamerispaha.com/page3/","author":{"@type":"Person","name":"Adam Erispaha"},"headline":"Home","description":"Civil/environmental engineer, loves charts, data, urban hydrology, and Python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- ga tracking -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-89047706-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="https://www.adamerispaha.com">
+          Adam Erispaha
+        </a>
+      </h1>
+      <p class="lead">Civil/environmental engineer, loves charts, data, urban hydrology, and Python</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- <a class="sidebar-nav-item" href="">Home</a> -->
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/aerispaha">Github Projects</a>
+      <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha">Gists</a>
+
+      <!-- <a class="sidebar-nav-item" href="https://gist.github.com/aerispaha/archive/v2.1.0.zip">Download</a> -->
+
+    </nav>
+
+    <p>&copy; 2021. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2016/12/14/file-permissions-for-django-media-uploads/">
+        File Permissions for Django Media Uploads
+      </a>
+    </h1>
+
+    <span class="post-date">14 Dec 2016</span>
+
+    <p>After switching over a Django app’s database from the SQLite starter kit to Postgres in a production environment, something happened to my ability to read/write uploaded media files. When attempting to upload an image from within my admin panel I was met with a “Error 13 - Permission denied”. This kicked off an all day session trying to understand file permissions on Linux systems - here is what I learned and what worked for me (bare in mind I’m learning these things on the fly and am certainly no expert).</p>
+
+<h2 id="users-and-groups">Users and Groups</h2>
+<p>From what I understand, Unixy systems are set up in a way that allows multiple “users” to be able to interact with the computer simultaneously. This architecture was apparently born from the days where computers took up entire rooms and needed to be shared among many researchers. A permissions system was, therefore, needed in order to prevent people from messing with other users’ files.
+<img src="https://www.adamerispaha.com/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg" alt="Ken-Thompson-and-Dennis-Ritchie-at-PDP11" />
+As it stands now, Linux files and directories can be protected by assigning read, write, and execute permissions to specific users only. Users can also be placed in “groups” that share permissions. Users and groups with limited access will not be able to interact freely with certain files and directories. With that, it seemed that in my Django app, the [Error 13] Permission Denied was being triggered because the “user” uploading the image did not have the proper permissions to write within the target folder.</p>
+
+<h2 id="unix-file-permissions-primer">Unix File Permissions Primer</h2>
+<p>To understand how to fix this, I first checked out how permissions were set on my target media file on my server using the list command with more details:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /var/www/media/ <span class="c">#my media folder</span>
+total 8
+drwxr-xr-x 2 root root 4096 Oct 24 23:15 <span class="nb">.</span>
+drwxr-xr-x 3 root root 4096 Oct 24 23:15 ..
+</code></pre></div></div>
+
+<p>The relevant information output from <code class="language-plaintext highlighter-rouge">ls -la</code> starts in the second row after the <code class="language-plaintext highlighter-rouge">total 8</code>. The second and third rows provide information related to the current directory and parent directory, respectively (signified by the trailing <code class="language-plaintext highlighter-rouge">.</code> and <code class="language-plaintext highlighter-rouge">..</code>). The codes within the first column define how permissions are set for the directory’s “owner”, “group”, and “other”. The first letter “d”, means that the row is a directory. Similarly, “r”, “w”, and “x” stand for read, write and execute, respectively, on that directory. After the starting “d”, the order of each trio of letters spell out the permissions for the directory’s owner, group, and other. Breaking down the first code <code class="language-plaintext highlighter-rouge">drwxr-xr-x</code> into its parts we get:</p>
+
+<ul>
+  <li>d —&gt; this row is a directory</li>
+  <li>rwx —&gt; read, write execute permissions for the owner</li>
+  <li>r-x —&gt; read and execute permissions for the owner group (the “w” slot is empty)</li>
+  <li>r-x —&gt; read and execute permissions for the other group (all other users can read and execute, but not write)</li>
+</ul>
+
+<p>Next we need to understand what users are considered the owner, owner group. This information is drawn from the third and fourth columns; in this case the owner and owner group are both root and all other users are namely “other”. Putting it all together, with the <code class="language-plaintext highlighter-rouge">ls -la</code> command, we understand the following permissions of my <code class="language-plaintext highlighter-rouge">/var/www/media/</code> directory:</p>
+
+<ul>
+  <li>the owner is root and has read, write execute permissions</li>
+  <li>the owner group is also root, having read and execute permissions only</li>
+  <li>all other users can read and execute</li>
+</ul>
+
+<h2 id="django-on-nginx-users">Django on nginx: users</h2>
+<p>Now that we know how to see what users have permissions in the <code class="language-plaintext highlighter-rouge">/var/www/media/</code> directory, we need to understand which user(s) are trying to read and write. My app was set up using a Digital Ocean “one-click” Django installation on Ubuntu 14.04 on a nginx web server. nginx is like Apache in that they are web servers, and with that it (I think, I guess?) needs to define a user with set permissions on directories and files in order to serve a website.</p>
+
+<p>Checking out the nginx config file on my server led me to this tidbit:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/nginx/nginx.conf
+
+user www-data;
+worker_processes 4;
+pid /run/nginx.pid;
+
+events {
+        worker_connections 768;
+        ...
+</code></pre></div></div>
+
+<p>Admittedly, I don’t know what most of this file means, but the first line says user www-data which I took to mean “the nginx user is named www-data”. Googling around seemed to confirm that that was a correct assumption.</p>
+
+<h2 id="changing-owners-and-permissions">Changing owners and permissions</h2>
+<p>In order for my app to be able upload media files, I needed to change the permissions and owner settings. This sounded scary at first, but doesn’t have to be. <a href="http://stackoverflow.com/questions/21797372/django-errno-13-permission-denied-var-www-media-animals-user-uploads?answertab=votes#answer-21797786">This Stack Overflow answer</a> was extremely helpful.</p>
+
+<h3 id="the-easy-bad-insecure-way">The easy, bad, insecure way:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo chmod</span> <span class="nt">-R</span> 777 /var/www/media/
+</code></pre></div></div>
+
+<p>This command changes the permissions recursively in <code class="language-plaintext highlighter-rouge">/var/www/media/</code> to allow read, write, and execute for all users, including other. This would have solved the problem, but is not secure.</p>
+
+<h3 id="the-better-way">The better way:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>groupadd varwwwusers
+<span class="nv">$ </span><span class="nb">sudo </span>adduser www-data varwwwusers
+<span class="nv">$ </span><span class="nb">sudo chgrp</span> <span class="nt">-R</span> varwwwusers /var/www/media/
+<span class="nv">$ </span><span class="nb">sudo chmod</span> <span class="nt">-R</span> 770 /var/www/media/
+</code></pre></div></div>
+
+<p>Step-by-step, this creates a new user group called ‘varwwwusers’, adds the user www-data to that group, changes the user group of /var/www/media/ to ‘varwwwusers’ and finally changes the owner privileges to 770 which allows read, write and, execute rights to the owner (root) and owner group (varwwwusers) with no access rights to anyone else. Because www-data was added to the varwwwusers group, www-data can now read and write.</p>
+
+<p>With that, I fired up my app and eagerly sent an image file upload to the media directory only to run into the same [Error 13] permission denied. Desperately, I pulled out the foolish <code class="language-plaintext highlighter-rouge">sudo chmod -R 777 /var/www/media/</code> and tried again, this time with success (of course). When I inspected the uploaded file, I found this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /var/www/media/ <span class="c">#my media folder</span>
+total 8
+drwxrwxrwx 2 root    varwwwusers 4096  Oct 24 23:15 <span class="nb">.</span>
+drwxr-xr-x 3 root    root        4096  Oct 24 23:15 ..
+<span class="nt">-rw-r--r--</span> 1 django  django      77105 Oct 26 20:54 cool_upload.jpg
+</code></pre></div></div>
+
+<p>So, it seemed that my <code class="language-plaintext highlighter-rouge">cool_upload.jpg</code> file was being taken by Django magic and written to my media folder as the user “django”. With that in mind, I had only a few more steps wrap things up.</p>
+
+<p>First, I added the user ‘django’ to the ‘varwwwusers’ group and changed the permissions back to 770:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>adduser django varwwwusers
+<span class="nv">$ </span><span class="nb">sudo chmod</span> <span class="nt">-R</span> 770 /var/www/media/
+</code></pre></div></div>
+
+<p>This means that directories with the owner group varwwwusers can sharedprivileges with django.
+Finally, to make new files uploaded by django hand-off group ownership to varwwwusers, I needed to do this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>g+s /var/www/media
+</code></pre></div></div>
+
+<p>which sets the group id for all new files within my media folder.</p>
+
+<p>After restarting nginx and Gunicorn, BOOM my app was ready to upload with fancy file permissions and without a gaping security hole. With that, my first Linux file permissions journey was complete.</p>
+
+<p>If I missed anything or misspoke (which is very likely), please let me know.</p>
+
+  </div>
+  
+</div>
+
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page2">&laquo; Previous</a>
+  
+
+  
+    <span class="pagination-item newer">Next</span>
+  
+</div>
+
+
+      <p>&copy; 2021. All rights reserved.</p>
+    </div>
+
+  </body>
+</html>

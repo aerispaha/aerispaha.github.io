@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Reading Shapefiles into Pandas Dataframes
+tags: Tech
 ---
 
 I've just about had it up to here with and ArcMap and arcpy. Today I begin my quest to free myself from ever needing to rely on ESRI for spatial analysis and mapping.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Unjust power structures will ignore calls for change if we let them
+tags: Politics
 ---
 
 Like most people, I'd prefer to see our communities come together, make things, learn, build, enjoy art, and coexist in harmony with each other and nature. But we obviously aren't there yet.

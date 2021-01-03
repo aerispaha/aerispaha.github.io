@@ -11,7 +11,8 @@ title:            Adam Erispaha
 tagline:          'A blog'
 description:      'Civil/environmental engineer, loves charts, data, urban hydrology, and Python'
 url:              https://www.adamerispaha.com
-baseurl:          /
+# baseurl:          /
+baseurl:          ""
 
 author:
   name:           'Adam Erispaha'
@@ -26,6 +27,11 @@ github:
   account:        https://github.com/aerispaha
   gist:           https://gist.github.com/aerispaha
 
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
 
 # Gems
 gems:

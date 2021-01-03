@@ -1,6 +1,7 @@
 ---
 layout: post
 title: File Permissions for Django Media Uploads
+tags: Tech
 ---
 
 After switching over a Django app's database from the SQLite starter kit to Postgres in a production environment, something happened to my ability to read/write uploaded media files. When attempting to upload an image from within my admin panel I was met with a "Error 13 - Permission denied". This kicked off an all day session trying to understand file permissions on Linux systems - here is what I learned and what worked for me (bare in mind I'm learning these things on the fly and am certainly no expert).

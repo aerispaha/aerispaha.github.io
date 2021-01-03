@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Forgot how to update my blog for 2 years
+tags: Personal
 ---
 
 I've tried several times to develop a writing habit with varying levels of
