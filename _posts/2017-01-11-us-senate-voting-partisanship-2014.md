@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Senate Voting Partisanship in 2014
+tags: [Politics, Tech]
 ---
 
 Inspired by  this [Gist](https://gist.github.com/rlucioni/8bdb1092579041ce739c)
