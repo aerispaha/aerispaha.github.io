@@ -8,7 +8,7 @@ After switching over a Django app's database from the SQLite starter kit to Post
 
 ## Users and Groups
 From what I understand, Unixy systems are set up in a way that allows multiple "users" to be able to interact with the computer simultaneously. This architecture was apparently born from the days where computers took up entire rooms and needed to be shared among many researchers. A permissions system was, therefore, needed in order to prevent people from messing with other users' files.
-![Ken-Thompson-and-Dennis-Ritchie-at-PDP11]({{site.url}}/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg)
+![Ken-Thompson-and-Dennis-Ritchie-at-PDP11]({{site.baseurl}}/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg)
 As it stands now, Linux files and directories can be protected by assigning read, write, and execute permissions to specific users only. Users can also be placed in "groups" that share permissions. Users and groups with limited access will not be able to interact freely with certain files and directories. With that, it seemed that in my Django app, the [Error 13] Permission Denied was being triggered because the "user" uploading the image did not have the proper permissions to write within the target folder.
 
 ## Unix File Permissions Primer

@@ -4,7 +4,7 @@
  <title>Adam Erispaha</title>
  <link href="https://www.adamerispaha.com/atom.xml" rel="self"/>
  <link href="https://www.adamerispaha.com/"/>
- <updated>2021-01-09T14:47:31-05:00</updated>
+ <updated>2021-01-10T19:56:58-05:00</updated>
  <id>https://www.adamerispaha.com</id>
  <author>
    <name>Adam Erispaha</name>
@@ -447,7 +447,7 @@ Now we’re seeing a major event play out.&lt;/p&gt;
 
 &lt;h2 id=&quot;users-and-groups&quot;&gt;Users and Groups&lt;/h2&gt;
 &lt;p&gt;From what I understand, Unixy systems are set up in a way that allows multiple “users” to be able to interact with the computer simultaneously. This architecture was apparently born from the days where computers took up entire rooms and needed to be shared among many researchers. A permissions system was, therefore, needed in order to prevent people from messing with other users’ files.
-&lt;img src=&quot;https://www.adamerispaha.com/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg&quot; alt=&quot;Ken-Thompson-and-Dennis-Ritchie-at-PDP11&quot; /&gt;
+&lt;img src=&quot;/assets/img/Ken-Thompson-and-Dennis-Ritchie-at-PDP11.jpg&quot; alt=&quot;Ken-Thompson-and-Dennis-Ritchie-at-PDP11&quot; /&gt;
 As it stands now, Linux files and directories can be protected by assigning read, write, and execute permissions to specific users only. Users can also be placed in “groups” that share permissions. Users and groups with limited access will not be able to interact freely with certain files and directories. With that, it seemed that in my Django app, the [Error 13] Permission Denied was being triggered because the “user” uploading the image did not have the proper permissions to write within the target folder.&lt;/p&gt;
 
 &lt;h2 id=&quot;unix-file-permissions-primer&quot;&gt;Unix File Permissions Primer&lt;/h2&gt;

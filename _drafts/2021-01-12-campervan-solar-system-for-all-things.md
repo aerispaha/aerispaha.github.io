@@ -1,9 +1,19 @@
-# How we built a camper van solar system to power all our things
+---
+layout: post
+title: How we built a camper van solar system to power all our things
+tags: Tech
+---
 
+![van stuff]({{site.baseurl}}/assets/img/van-smokey-mountains.jpg)
 
 In the earliest weeks of 2020, my wife and I (along with our cat) decided to
-leave our beloved studio apartment in Philadelphia for a life on the road. We
-found a humble, but very well-preserved, 1985 Dodge Roadtrek campervan. 
+leave our beloved studio apartment in Philadelphia for a life on the road.
+The plan was to travel to the Texas-Mexico border to work within refugee camp.
+
+The cat insisted on driving instead of flying which led us to the decision to
+pack ourselves into a campervan. And after
+several weeks of combing Craigslist, we found a humble, but very well-preserved,
+1985 Dodge Roadtrek campervan.
 
 
 #### Overview
